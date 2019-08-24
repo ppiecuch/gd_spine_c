@@ -229,7 +229,7 @@ public:
 
 static ResourceFormatLoaderSpine *resource_loader_spine = NULL;
 
-void register_spine_types() {
+void register_gd_spine_types() {
 
 	ClassDB::register_class<Spine>();
 	ClassDB::register_class<Spine::SpineResource>();
@@ -241,7 +241,7 @@ void register_spine_types() {
 	_spSetFree(spine_free);
 }
 
-void unregister_spine_types() {
+void unregister_gd_spine_types() {
 
 	if (resource_loader_spine)
 		memdelete(resource_loader_spine);
@@ -250,7 +250,7 @@ void unregister_spine_types() {
 
 #else
 
-void register_spine_types() {}
-void unregister_spine_types() {}
+void register_gd_spine_types() {}
+void unregister_gd_spine_types() {}
 
 #endif // MODULE_SPINE_ENABLED
