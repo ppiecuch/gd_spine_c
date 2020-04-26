@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
-#ifdef MODULE_SPINE_ENABLED
+#ifdef MODULE_GD_SPINE_ENABLED
 
 #include <core/class_db.h>
 #include <core/project_settings.h>
@@ -239,13 +239,13 @@ public:
 	}
 };
 
-static ResourceFormatLoaderSpine *resource_loader_spine = NULL;
+static Ref<ResourceFormatLoaderSpine> resource_loader_spine;
 
 void register_gd_spine_types() {
 
 	ClassDB::register_class<Spine>();
 	ClassDB::register_class<Spine::SpineResource>();
-	resource_loader_spine = memnew( ResourceFormatLoaderSpine );
+	resource_loader_spine.instance();
 	ResourceLoader::add_resource_format_loader(resource_loader_spine);
 
 	_spSetMalloc(spine_malloc);
@@ -255,8 +255,8 @@ void register_gd_spine_types() {
 
 void unregister_gd_spine_types() {
 
-	if (resource_loader_spine)
-		memdelete(resource_loader_spine);
+	ResourceLoader::remove_resource_format_loader(resource_loader_spine);
+	resource_loader_spine.unref();
 
 }
 
@@ -265,4 +265,4 @@ void unregister_gd_spine_types() {
 void register_gd_spine_types() {}
 void unregister_gd_spine_types() {}
 
-#endif // MODULE_SPINE_ENABLED
+#endif // MODULE_GD_SPINE_ENABLED

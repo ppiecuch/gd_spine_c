@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
-#ifdef MODULE_SPINE_ENABLED
+#ifdef MODULE_GD_SPINE_ENABLED
 #include "core/version_generated.gen.h"
 #include "spine_batcher.h"
 
@@ -184,5 +184,5 @@ SpineBatcher::~SpineBatcher() {
 	memdelete(elements);
 }
 
-#endif // MODULE_SPINE_ENABLED
+#endif // MODULE_GD_SPINE_ENABLED
 

@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
-#ifdef MODULE_SPINE_ENABLED
+#ifdef MODULE_GD_SPINE_ENABLED
 #include "spine.h"
 #include "core/io/resource_loader.h"
 #include "scene/2d/collision_object_2d.h"
@@ -1418,4 +1418,4 @@ Spine::~Spine() {
 	_spine_dispose();
 }
 
-#endif // MODULE_SPINE_ENABLED
+#endif // MODULE_GD_SPINE_ENABLED

@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
-#ifdef MODULE_SPINE_ENABLED
+#ifdef MODULE_GD_SPINE_ENABLED
 #ifndef SPINE_H
 #define SPINE_H
 
@@ -252,5 +252,5 @@ VARIANT_ENUM_CAST(Spine::AnimationProcessMode);
 VARIANT_ENUM_CAST(Spine::DebugAttachmentMode);
 
 #endif // SPINE_H
-#endif // MODULE_SPINE_ENABLED
+#endif // MODULE_GD_SPINE_ENABLED
 
