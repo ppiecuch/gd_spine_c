@@ -1303,6 +1303,7 @@ void Spine::_bind_methods() {
 	BIND_ENUM_CONSTANT(DEBUG_ATTACHMENT_BOUNDING_BOX);
 }
 
+#ifdef TOOLS_ENABLED
 Rect2 Spine::_edit_get_rect() const {
 
 	if (skeleton == NULL)
@@ -1344,6 +1345,7 @@ Rect2 Spine::_edit_get_rect() const {
 bool Spine::_edit_use_rect() const {
 	return skeleton != NULL;
 }
+#endif  // #ifdef TOOLS_ENABLED
 
 void Spine::_update_verties_count() {
 
