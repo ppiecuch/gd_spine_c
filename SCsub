@@ -1,14 +1,15 @@
-﻿Import('env')
+﻿#!/usr/bin/env python
+
+Import('env')
 Import('env_modules')
 
-env_modules.add_source_files(env.modules_sources,"src/spine/*.c")
-env_modules.add_source_files(env.modules_sources,"*.cpp")
+env_module = env_modules.Clone()
+env_module.Append(CPPPATH=[".", "include"])
 
-env_modules.Append(CPPFLAGS=[
-	"-I", "modules/gd_spine/include",
-])
+sources = Glob("*.cpp")
+sources += Glob("src/spine/*.c")
 
-Export('env_modules')
-Export('env')
-
-
+# Compile as a static library
+lib = env_module.Library("gd_spine", sources)
+# Add the library as a dependency of the final executable
+env.Prepend(LIBS=[lib])
