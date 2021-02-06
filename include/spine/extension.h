@@ -95,6 +95,7 @@
 #define DEG_RAD (PI / 180)
 #define RAD_DEG (180 / PI)
 
+#undef ABS
 #define ABS(A) ((A) < 0? -(A): (A))
 #define SIGNUM(A) ((A) < 0? -1: (A) > 0 ? 1 : 0)
 
@@ -118,6 +119,7 @@
 
 #define SIN_DEG(A) SIN((A) * DEG_RAD)
 #define COS_DEG(A) COS((A) * DEG_RAD)
+#undef CLAMP
 #define CLAMP(x, min, max) ((x) < (min) ? (min) : ((x) > (max) ? (max) : (x)))
 #ifndef MIN
 #define MIN(x, y) ((x) < (y) ? (x) : (y))

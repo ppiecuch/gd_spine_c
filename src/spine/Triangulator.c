@@ -129,7 +129,6 @@ static int _winding (float p1x, float p1y, float p2x, float p2y, float p3x, floa
 spShortArray* spTriangulator_triangulate(spTriangulator* self, spFloatArray* verticesArray) {
 	float* vertices = verticesArray->items;
 	int vertexCount = verticesArray->size >> 1;
-	int i, n, ii;
 
 	spShortArray* indicesArray = self->indicesArray;
 	short* indices;
@@ -139,12 +138,12 @@ spShortArray* spTriangulator_triangulate(spTriangulator* self, spFloatArray* ver
 
 	spShortArray_clear(indicesArray);
 	indices = spShortArray_setSize(indicesArray, vertexCount)->items;
-	for (i = 0; i < vertexCount; i++)
+	for (int i = 0; i < vertexCount; i++)
 		indices[i] = (short)i;
 
 	isConcaveArray = self->isConcaveArray;
 	isConcave = spIntArray_setSize(isConcaveArray, vertexCount)->items;
-	for (i = 0, n = vertexCount; i < n; ++i)
+	for (int i = 0, n = vertexCount; i < n; ++i)
 		isConcave[i] = _isConcave(i, vertexCount, vertices, indices);
 
 	triangles = self->triangles;
@@ -160,7 +159,7 @@ spShortArray* spTriangulator_triangulate(spTriangulator* self, spFloatArray* ver
 				float p1x = vertices[p1], p1y = vertices[p1 + 1];
 				float p2x = vertices[p2], p2y = vertices[p2 + 1];
 				float p3x = vertices[p3], p3y = vertices[p3 + 1];
-				for (ii = (next + 1) % vertexCount; ii != previous; ii = (ii + 1) % vertexCount) {
+				for (int ii = (next + 1) % vertexCount; ii != previous; ii = (ii + 1) % vertexCount) {
 					int v;
 					float vx, vy;
 					if (!isConcave[ii]) continue;

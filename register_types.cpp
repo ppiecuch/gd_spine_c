@@ -178,7 +178,6 @@ class ResourceFormatLoaderSpine : public ResourceFormatLoader {
 public:
 
 	virtual RES load(const String &p_path, const String& p_original_path = "", Error *p_err=NULL) {
-		float start = OS::get_singleton()->get_ticks_msec();
 		Spine::SpineResource *res = memnew(Spine::SpineResource);
 		Ref<Spine::SpineResource> ref(res);
 		String p_atlas = p_path.get_basename() + ".atlas";
@@ -214,8 +213,6 @@ public:
 		}
 
 		res->set_path(p_path);
-		float finish = OS::get_singleton()->get_ticks_msec();
-		// print_line("Spine resource (" + p_path + ") loaded in " + itos(finish-start) + " msecs");
 		return ref;
 	}
 

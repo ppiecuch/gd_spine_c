@@ -138,8 +138,7 @@ void Spine::_on_fx_draw() {
 	if (skeleton == NULL)
 		return;
 	fx_batcher.reset();
-	RID eci = fx_node->get_canvas_item();
-	// VisualServer::get_singleton()->canvas_item_add_set_blend_mode(eci, VS::MaterialBlendMode(fx_node->get_blend_mode()));
+	// VisualServer::get_singleton()->canvas_item_add_set_blend_mode(x_node->get_canvas_item(), VS::MaterialBlendMode(fx_node->get_blend_mode()));
 	fx_batcher.flush();
 }
 
@@ -150,18 +149,16 @@ void Spine::_animation_draw() {
 
 	spColor_setFromFloats(&skeleton->color, modulate.r, modulate.g, modulate.b, modulate.a);
 
-	int additive = 0;
-	int fx_additive = 0;
-	Color color;
+	// int additive = 0;
+	// int fx_additive = 0;
 	const float *uvs = NULL;
 	int verties_count = 0;
 	unsigned short *triangles = NULL;
 	int triangles_count = 0;
 	float r = 0, g = 0, b = 0, a = 0;
 
-	RID ci = this->get_canvas_item();
 	batcher.reset();
-	// VisualServer::get_singleton()->canvas_item_add_set_blend_mode(ci, VS::MaterialBlendMode(get_blend_mode()));
+	// VisualServer::get_singleton()->canvas_item_add_set_blend_mode(this->get_canvas_item(), VS::MaterialBlendMode(get_blend_mode()));
 
 	const char *fx_prefix = fx_slot_prefix.get_data();
 
@@ -214,24 +211,25 @@ void Spine::_animation_draw() {
 		}
 		if (texture.is_null())
 			continue;
-		/*
-		if (is_fx && slot->data->blendMode != fx_additive) {
 
-			fx_batcher.add_set_blender_mode(slot->data->additiveBlending
-				? VisualServer::MATERIAL_BLEND_MODE_ADD
-				: get_blend_mode()
-			);
-			fx_additive = slot->data->additiveBlending;
-		}
-		else if (slot->data->additiveBlending != additive) {
+		// if (is_fx && slot->data->blendMode != fx_additive) {
+		//
+		// 	fx_batcher.add_set_blender_mode(slot->data->additiveBlending
+		// 		? VisualServer::MATERIAL_BLEND_MODE_ADD
+		// 		: get_blend_mode()
+		// 	);
+		// 	fx_additive = slot->data->additiveBlending;
+		// }
+		// else if (slot->data->additiveBlending != additive) {
+		//
+		// 	batcher.add_set_blender_mode(slot->data->additiveBlending
+		// 		? VisualServer::MATERIAL_BLEND_MODE_ADD
+		// 		: fx_node->get_blend_mode()
+		// 	);
+		// 	additive = slot->data->additiveBlending;
+		// }
 
-			batcher.add_set_blender_mode(slot->data->additiveBlending
-				? VisualServer::MATERIAL_BLEND_MODE_ADD
-				: fx_node->get_blend_mode()
-			);
-			additive = slot->data->additiveBlending;
-		}
-		 */
+		Color color;
 
 		color.a = skeleton->color.a * slot->color.a * a;
 		color.r = skeleton->color.r * slot->color.r * r;
@@ -319,13 +317,13 @@ void Spine::_animation_draw() {
 
 				for (int idx = 0; idx < triangles_count - 2; idx += 3) {
 
-					int a = triangles[idx];
-					int b = triangles[idx + 1];
-					int c = triangles[idx + 2];
+					int aa = triangles[idx];
+					int bb = triangles[idx + 1];
+					int cc = triangles[idx + 2];
 
-					draw_line(points[a], points[b], color);
-					draw_line(points[b], points[c], color);
-					draw_line(points[c], points[a], color);
+					draw_line(points[aa], points[bb], color);
+					draw_line(points[bb], points[cc], color);
+					draw_line(points[cc], points[aa], color);
 				}
 			}
 		}
@@ -698,7 +696,7 @@ bool Spine::add(const String &p_name, bool p_loop, int p_track, int p_delay) {
 	ERR_FAIL_COND_V(skeleton == NULL, false);
 	spAnimation *animation = spSkeletonData_findAnimation(skeleton->data, p_name.utf8().get_data());
 	ERR_FAIL_COND_V(animation == NULL, false);
-	spTrackEntry *entry = spAnimationState_addAnimation(state, p_track, animation, p_loop, p_delay);
+	/* spTrackEntry *entry = */ spAnimationState_addAnimation(state, p_track, animation, p_loop, p_delay);
 
 	_set_process(true);
 	playing = true;
@@ -1418,6 +1416,12 @@ Spine::~Spine() {
 
 	// cleanup
 	_spine_dispose();
+	
+	if (fx_node && fx_node->get_parent() == NULL) {
+		// prevent from object leaking if node
+		// has not been added to the tree
+		memdelete(fx_node);
+	}
 }
 
 #endif // MODULE_GD_SPINE_ENABLED
