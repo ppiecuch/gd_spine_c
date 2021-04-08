@@ -69,12 +69,12 @@ void Spine::spine_animation_callback(spAnimationState *p_state, spEventType p_ty
 void Spine::_on_animation_state_event(int p_track, spEventType p_type, spEvent *p_event, int p_loop_count) {
 
 	switch (p_type) {
-		case SP_ANIMATION_START:
+		case SP_ANIMATION_START: {
 			emit_signal("animation_start", p_track);
-			break;
-		case SP_ANIMATION_COMPLETE:
+		} break;
+		case SP_ANIMATION_COMPLETE: {
 			emit_signal("animation_complete", p_track, p_loop_count);
-			break;
+		} break;
 		case SP_ANIMATION_EVENT: {
 			Dictionary event;
 			event["name"] = p_event->data->name;
@@ -83,8 +83,11 @@ void Spine::_on_animation_state_event(int p_track, spEventType p_type, spEvent *
 			event["string"] = p_event->stringValue ? p_event->stringValue : "";
 			emit_signal("animation_event", p_track, event);
 		} break;
-		case SP_ANIMATION_END:
+		case SP_ANIMATION_END: {
 			emit_signal("animation_end", p_track);
+		} break;
+		case SP_ANIMATION_INTERRUPT:
+		case SP_ANIMATION_DISPOSE:
 			break;
 	}
 }
@@ -185,8 +188,8 @@ void Spine::_animation_draw() {
 				g = attachment->color.g;
 				b = attachment->color.b;
 				a = attachment->color.a;
-				break;
-			}
+			} break;
+
 			case SP_ATTACHMENT_MESH: {
 
 				spMeshAttachment *attachment = (spMeshAttachment *)slot->attachment;
@@ -201,14 +204,22 @@ void Spine::_animation_draw() {
 				g = attachment->color.g;
 				b = attachment->color.b;
 				a = attachment->color.a;
-				break;
-			}
+			} break;
 
 			case SP_ATTACHMENT_BOUNDING_BOX: {
 
 				continue;
 			}
+
+			case SP_ATTACHMENT_POINT:
+			case SP_ATTACHMENT_PATH:
+			case SP_ATTACHMENT_CLIPPING:
+			case SP_ATTACHMENT_LINKED_MESH: {
+
+				WARN_PRINT("Spine: attachment type not supported");
+			} break;
 		}
+
 		if (texture.is_null())
 			continue;
 
@@ -264,8 +275,7 @@ void Spine::_animation_draw() {
 					color = Color(0, 0, 1, 1);
 					triangles = NULL;
 					triangles_count = 0;
-					break;
-				}
+				} break;
 				case SP_ATTACHMENT_MESH: {
 
 					if (!debug_attachment_mesh)
@@ -276,8 +286,7 @@ void Spine::_animation_draw() {
 					color = Color(0, 1, 1, 1);
 					triangles = attachment->triangles;
 					triangles_count = attachment->trianglesCount;
-					break;
-				}
+				} break;
 				case SP_ATTACHMENT_BOUNDING_BOX: {
 
 					if (!debug_attachment_bounding_box)
@@ -288,8 +297,14 @@ void Spine::_animation_draw() {
 					color = Color(0, 1, 0, 1);
 					triangles = NULL;
 					triangles_count = 0;
-					break;
-				}
+				} break;
+				case SP_ATTACHMENT_POINT:
+				case SP_ATTACHMENT_PATH:
+				case SP_ATTACHMENT_CLIPPING:
+				case SP_ATTACHMENT_LINKED_MESH: {
+
+					WARN_PRINT("Spine: attachment type not supported");
+				} break;
 			}
 
 			Point2 *points = (Point2 *)world_verts.ptr();
@@ -935,6 +950,14 @@ Dictionary Spine::get_attachment(const String &p_slot_name, const String &p_atta
 			dict["type"] = "mesh";
 			dict["path"] = info->path;
 			dict["color"] = Color(info->color.r, info->color.g, info->color.b, info->color.a);
+		} break;
+
+		case SP_ATTACHMENT_POINT:
+		case SP_ATTACHMENT_PATH:
+		case SP_ATTACHMENT_CLIPPING:
+		case SP_ATTACHMENT_LINKED_MESH: {
+
+			WARN_PRINT("Spine: attachment type not supported");
 		} break;
 	}
 	return dict;
