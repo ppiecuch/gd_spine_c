@@ -4,14 +4,16 @@ import os
 Import("env")
 Import("env_modules")
 
-is_clang_or_gcc = ("gcc" in os.path.basename(env["CC"])) or ("clang" in os.path.basename(env["CC"])) or ("osxcross" in env)
+is_clang_or_gcc = (
+    ("gcc" in os.path.basename(env["CC"])) or ("clang" in os.path.basename(env["CC"])) or ("osxcross" in env)
+)
 
 module = os.path.splitext(os.path.basename(os.path.realpath(".")))[0]
 
 env_module = env_modules.Clone()
 env_module.Append(CPPPATH=[".", "include"])
 if is_clang_or_gcc:
-     env_module.Append(CXXFLAGS=["-Wno-switch"])
+    env_module.Append(CXXFLAGS=["-Wno-switch"])
 
 sources = Glob("*.cpp")
 sources += Glob("src/spine/*.c")
