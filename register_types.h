@@ -27,5 +27,5 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
-void register_gd_spine_types();
-void unregister_gd_spine_types();
+void register_gd_spine_c_types();
+void unregister_gd_spine_c_types();
